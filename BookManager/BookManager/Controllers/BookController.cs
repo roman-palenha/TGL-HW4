@@ -1,69 +1,60 @@
 ﻿using AutoMapper;
-using Contracts;
-using Entities.DataTransferObjects;
-using Entities.Models;
+using BookManager.Domain.Entities;
+using BookManager.Domain.Models;
+using BookManager.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookManager.Controllers
 {
+    
     public class BookController : Controller
     {
-        private readonly IRepositoryManager _repository;
-        private readonly IMapper _mapper;
+        private readonly IBookService _bookService;
 
-        public BookController(IRepositoryManager repository, IMapper mapper)
+        public BookController(IBookService bookService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _bookService = bookService;
         }
-
 
         public async Task<IActionResult> Index()
         {
-            var books = await _repository.Book.GetAllBooksAsync(trackChanges: false);
-            var booksDto = _mapper.Map<IEnumerable<BookDto>>(books);
+            var result = await _bookService.GetBooks();
 
-            return View(booksDto);
+            return View(result);
         }
 
         public async Task<IActionResult> Create()
         {
-             return View();
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] BookForCreationDto bookForCreationDto)
+        public async Task<IActionResult> Create(BookModel book)
         {
-            var book = _mapper.Map<Book>(bookForCreationDto);
-            _repository.Book.CreateBook(book);
-            await _repository.SaveAsync();
+            var result = await _bookService.CreateBook(book);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var book = await _repository.Book.GetBookAsync(id, trackChanges: true);
-            var bookDto = _mapper.Map<BookForUpdateDto>(book);
-            return View(bookDto);
+            var book = await _bookService.GetBook(id);
+            return View(book);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Price")] BookForUpdateDto bookForUpdateDto)
+        public async Task<IActionResult> Edit(Book bookForUpdate)
         {
-            var bookEntity = await _repository.Book.GetBookAsync(bookForUpdateDto.Id, trackChanges: true);
-            _mapper.Map(bookForUpdateDto, bookEntity);
-            await _repository.SaveAsync();
+            await _bookService.UpdateBook(bookForUpdate);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var book = await _repository.Book.GetBookAsync(id, trackChanges: false);
-            _repository.Book.DeleteBook(book);
-            await _repository.SaveAsync();
+            await _bookService.RemoveBook(id);
             return RedirectToAction(nameof(Index));
         }
     }
+    
 }

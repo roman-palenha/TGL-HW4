@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class BookRepository : RepositoryBase<Book>, IBookRepository
+    public class BookRepository : RepositoryBase<BookModel>, IBookRepository
     {
         public BookRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
@@ -18,24 +18,24 @@ namespace Repository
 
         }
 
-        public void CreateBook(Book book)
+        public void CreateBook(BookModel book)
         {
             Create(book);
         }
 
-        public void DeleteBook(Book book)
+        public void DeleteBook(BookModel book)
         {
             Delete(book);
         }
 
-        public async Task<IEnumerable<Book>> GetAllBooksAsync(bool trackChanges)
+        public async Task<IEnumerable<BookModel>> GetAllBooksAsync(bool trackChanges)
         {
             return await FindAll(trackChanges)
                 .OrderBy(b => b.Name)
                 .ToListAsync();
         }
 
-        public async Task<Book> GetBookAsync(Guid id, bool trackChanges)
+        public async Task<BookModel> GetBookAsync(Guid id, bool trackChanges)
         {
             return await FindByCondition(b => b.Id.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();

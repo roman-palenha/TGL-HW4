@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Entities.Models;
+﻿using BookManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace BookManager.DAL
 {
-    public class RepositoryContext : DbContext
+    public class BookDbContext : DbContext
     {
-        public RepositoryContext(DbContextOptions options)
+        public BookDbContext(DbContextOptions options)
             : base(options)
         {
-
         }
 
         public DbSet<Book> Books { get; set; }

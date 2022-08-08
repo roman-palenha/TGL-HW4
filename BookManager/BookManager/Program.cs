@@ -1,15 +1,17 @@
-using BookManager.Extensions;
-using Microsoft.AspNetCore.HttpOverrides;
 
+using BookManager.DAL;
+using Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.ConfigureSqlContext(builder.Configuration);
+//builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.AddDbContext<BookDbContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 builder.Services.AddControllersWithViews();
 builder.Services.ConfigureCors();
-builder.Services.ConfigureIISIntegration();
-builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

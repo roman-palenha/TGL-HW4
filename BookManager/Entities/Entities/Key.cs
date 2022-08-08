@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DataTransferObjects
+namespace Domain.Entities
 {
-    public class BookDto
+    public class Key
     {
+        [Key]
         public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public double Price { get; set; }
     }
 }

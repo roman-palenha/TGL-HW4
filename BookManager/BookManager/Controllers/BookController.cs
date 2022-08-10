@@ -23,6 +23,7 @@ namespace BookManager.Controllers
             return View(result);
         }
 
+
         public async Task<IActionResult> Create()
         {
             return View();

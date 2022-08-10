@@ -11,7 +11,7 @@ namespace BookManager.Services.Implementations
 {
     public class BaseService<T> where T : class
     {
-		public readonly BookDbContext _dbContext;
+		private readonly BookDbContext _dbContext;
 
 		public BaseService(BookDbContext dbContext)
 		{

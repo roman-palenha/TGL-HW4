@@ -20,11 +20,11 @@ namespace BookManager.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateBook(BookModel card)
+        public async Task<bool> CreateBook(BookModel bookModel)
         {
-            if(card != null)
+            if(bookModel != null)
             {
-                var result = _mapper.Map<Book>(card);
+                var result = _mapper.Map<Book>(bookModel);
                 await _baseService.Insert(result);
                 return true;
             }

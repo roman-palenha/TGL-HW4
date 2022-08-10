@@ -14,7 +14,7 @@ namespace BookManager.Services.Interfaces
 
         Task<Book> GetBook(Guid id);
 
-        Task<bool> CreateBook(BookModel card);
+        Task<bool> CreateBook(BookModel bookModel);
 
         Task<bool> UpdateBook(Book cardForUpdate);
 
